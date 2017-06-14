@@ -165,6 +165,8 @@ module.exports = {
           /\.gif$/,
           /\.jpe?g$/,
           /\.png$/,
+          /\.sass/,
+          /\.scss/,
         ],
         loader: require.resolve('file-loader'),
         options: {
@@ -192,6 +194,24 @@ module.exports = {
           presets: [require.resolve('babel-preset-react-app')],
         },
         // @remove-on-eject-end
+      },
+      // SASS!!!
+      // Stolen pretty much directly from https://github.com/webpack-contrib/sass-loader/blob/master/test/bootstrapSass/webpack.config.js
+      // Also, see https://webpack.js.org/loaders/sass-loader/
+      {
+        test: /\.(sass|scss)$/,
+        include: paths.appSrc,
+        use: [{
+            loader: 'css-loader'
+        }, {
+            loader: 'sass-loader'
+        }]
+      },
+      {
+        test: /\.woff2?$|\.tff|\.eot$|\.svg$/,
+        use: [{
+          loader: 'file-loader'
+        }]
       },
       // The notation here is somewhat confusing.
       // "postcss" loader applies autoprefixer to our CSS.
@@ -337,6 +357,10 @@ module.exports = {
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new ExtractTextPlugin({
+      filename: '[name].[contenthash].css',
+      disable: process.env.NODE_ENV === 'development'
+    }),
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

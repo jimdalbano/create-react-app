@@ -166,6 +166,8 @@ module.exports = {
           /\.gif$/,
           /\.jpe?g$/,
           /\.png$/,
+          /\.sass/,
+          /\.scss/,
         ],
         loader: require.resolve('file-loader'),
         options: {
@@ -198,6 +200,26 @@ module.exports = {
           // directory for faster rebuilds.
           cacheDirectory: true,
         },
+      },
+      // SASS!!!
+      // Stolen pretty much directly from https://github.com/webpack-contrib/sass-loader/blob/master/test/bootstrapSass/webpack.config.js
+      // Also, see https://webpack.js.org/loaders/sass-loader/
+      {
+        test: /\.(sass|scss)$/,
+        include: paths.appSrc,
+        use: [{
+            loader: 'style-loader'
+        }, {
+            loader: 'css-loader'
+        }, {
+            loader: 'sass-loader'
+        }]
+      },
+      {
+        test: /\.woff2?$|\.tff|\.eot$|\.svg$/,
+        use: [{
+          loader: 'file-loader'
+        }]
       },
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.
